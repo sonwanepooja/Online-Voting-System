@@ -1,0 +1,41 @@
+.home {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: black;
+  color: white;
+  padding: 50px;
+}
+
+.home-left img {
+  width: 300px;
+  border-radius: 8px;
+}
+
+.home-right {
+  max-width: 500px;
+}
+
+.home-right h2 {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.home-right h1 {
+  font-size: 40px;
+  color: #0056d2;
+}
+
+.btn-group {
+  margin-top: 20px;
+}
+
+.btn {
+  background: #0056d2;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  margin-right: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}

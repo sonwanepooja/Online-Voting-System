@@ -1,0 +1,38 @@
+.steps-container {
+  padding: 60px 80px;
+  background: white;
+  min-height: calc(100vh - 80px); /* below header */
+}
+
+.steps-title {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 40px;
+}
+
+.steps-title span {
+  border-bottom: 4px solid #007bff;
+}
+
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.step-icon {
+  font-size: 40px;
+  color: black;
+  min-width: 40px;
+}
+
+.step-item p {
+  font-size: 18px;
+  font-weight: 500;
+}
