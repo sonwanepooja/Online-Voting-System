@@ -3,9 +3,23 @@ import "./Header.css";
 import LETS_GO from "../Images/lets_vote.jpg";
 import LOGIN_BUTTON from "../Images/loginButton.svg";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Header = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
+
+  const token = Cookies.get("authToken");
+  console.log("Token from cookies:", token);
+
+  const handleLogout = () => {
+    Cookies.remove("authToken"); // remove token from cookies
+    navigate("/login"); // redirect to login page
+  };
+
+  const handleClickRegister = () => {
+    navigate("/registration");
+  };
+
   return (
     <div className="header-container">
       {/* Background with particles/stars effect */}
@@ -19,19 +33,37 @@ const Header = () => {
       <nav className="navbar">
         <div className="nav-right">
           <div className="nav-links">
-            <a href="#about" className="nav-link">
+            <a href="/about" className="nav-link">
               About
             </a>
-            <a href="#contact" className="nav-link">
+            <a href="/contact" className="nav-link">
               Contact
             </a>
           </div>
-          <img
-            src={LOGIN_BUTTON}
-            alt="Login"
-            style={{ cursor: "pointer" }}
-            onClick={() => navigate("/login")}
-          />
+          {/* ✅ Conditionally show Login or Logout */}
+          {!token ? (
+            <img
+              src={LOGIN_BUTTON}
+              alt="Login"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/login")}
+            />
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="logout-btn"
+              style={{
+                background: "#ff4d4f",
+                border: "none",
+                padding: "6px 14px",
+                color: "white",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              Logout
+            </button>
+          )}
         </div>
       </nav>
 
@@ -56,16 +88,12 @@ const Header = () => {
           <h2 className="sub-heading">Vote Today</h2>
 
           <div className="action-buttons">
-            <button className="register-btn">REGISTER</button>
+            <button className="register-btn" onClick={handleClickRegister}>
+              REGISTER
+            </button>
             <button className="read-more-btn">READ MORE</button>
           </div>
         </div>
-      </div>
-
-      {/* Bottom Right Corner Text */}
-      <div className="corner-text">
-        <p>Activate Windows</p>
-        <p>Go to Settings to activate Windows.</p>
       </div>
     </div>
   );

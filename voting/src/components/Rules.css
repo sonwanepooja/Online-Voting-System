@@ -1,7 +1,6 @@
 .steps-container {
   padding: 60px 80px;
   background: white;
-  min-height: calc(100vh - 80px); /* below header */
 }
 
 .steps-title {

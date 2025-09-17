@@ -8,28 +8,44 @@ import PersonalInfo from "./pages/PersonalInfo";
 import Rules from "./pages/Rules";
 import VotingPanel from "./pages/VotingPanel";
 import Footer from "./components/Footer";
+import Election from "./pages/Election";
+import Contact from "./pages/Contact";
+import Features from "./pages/Features";
 
 function App() {
   const location = useLocation();
-  const isLoginPage = location.pathname === "/login"; // ✅ only login page
+
+  // Pages where Header and Footer should NOT be show
+  const hideHeaderFooter = [
+    "/login",
+    "/personal-info",
+    "/personal-info/election",
+    "/personal-info/contact",
+  ].includes(location.pathname);
 
   return (
     <div className="app-container">
-      {!isLoginPage && <Header />}
+      {/* Show Header only when not hidden */}
+      {!hideHeaderFooter && <Header />}
 
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<Rules />} />
-          <Route path="/home" element={<Home />} /> {/* Home page */}
-          <Route path="/login" element={<Login />} /> {/* Login page */}
+          <Route path="/" element={<Rules />} /> {/* Default landing page */}
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />
+          <Route path="/feature" element={<Features />} />
           <Route path="/registration" element={<Registration />} />
-          <Route path="/personal-info" element={<PersonalInfo />} />
           <Route path="/voting" element={<VotingPanel />} />
+          <Route path="/personal-info" element={<PersonalInfo />} />
+          <Route path="/personal-info/election" element={<Election />} />
+          <Route path="/personal-info/contact" element={<Contact />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
 
-      {!isLoginPage && <Footer />}
+      {/* Show Footer only when not hidden */}
+      {!hideHeaderFooter && <Footer />}
     </div>
   );
 }

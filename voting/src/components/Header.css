@@ -94,9 +94,9 @@
 .nav-link {
   color: #ffffff;
   text-decoration: none;
-  font-size: 18px;
-  font-weight: 400;
+  font-size: 25px;
   transition: color 0.3s ease;
+  font-family: serif;
 }
 
 .nav-link:hover {
@@ -237,19 +237,21 @@
 
 .main-heading {
   color: #ffffff;
-  font-size: 32px;
-  font-weight: 300;
+  font-size: 48px;
+  /* font-weight: 300; */
   margin-bottom: 10px;
   letter-spacing: 1px;
+  font-family: serif;
 }
 
 .sub-heading {
-  color: #4a90e2;
-  font-size: 72px;
-  font-weight: 700;
+  color: #015fc7;
+  font-size: 99px;
+  /* font-weight: 700; */
+  margin-top: 10px;
   margin-bottom: 40px;
-  letter-spacing: 2px;
-  text-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+  /* text-shadow: 0 0 20px rgba(74, 144, 226, 0.3); */
+  font-family: serif;
 }
 
 .action-buttons {

@@ -1,0 +1,75 @@
+@font-face {
+  font-family: "Padauk";
+  src: url("../Images/Padauk-Regular.ttf") format("truetype");
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #001124;
+  height: 100%;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.form-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-image img {
+  width: 250px;
+  height: auto;
+}
+
+.form-box {
+  flex: 1;
+  padding: 20px;
+}
+
+.form-box h2 {
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.label-registration {
+  margin: 8px 0 4px;
+  font-size: 20px;
+ font-family: "Padauk", sans-serif;
+ display: flex;
+}
+
+.input-registration {
+  padding: 8px;
+  border: none;
+  border-radius: 3px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  width: 50%;
+}
+
+.submit-button-registration {
+  background-color: #0056b3;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 30%; 
+  align-self: baseline;
+  margin-left: 80px;
+}
+
+button:hover {
+  background-color: #004494;
+}

@@ -1,0 +1,36 @@
+.features-container {
+  display: flex;
+  align-items: flex-start;
+  padding: 50px;
+  background: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.features-title {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 28px;
+  font-weight: bold;
+  margin-right: 40px;
+  border-right: 3px solid #004aad;
+  padding-right: 15px;
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 18px;
+  color: #111;
+}
+
+.feature-icon {
+  font-size: 28px;
+  color: black;
+}

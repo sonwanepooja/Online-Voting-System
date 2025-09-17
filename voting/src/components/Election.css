@@ -1,0 +1,76 @@
+.election-container {
+  height: 100vh;
+  width: 100vw;
+  background: #0b1a2e;
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar */
+.navbar-election {
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-links-election {
+  list-style: none;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links-election li a {
+  color: white;
+  text-decoration: none;
+  font-size: 25px;
+  position: relative;
+  font-family: serif;
+}
+
+.nav-links-election li a:hover {
+  color: #64b5f6;
+}
+
+.vote-btn-election {
+  background: linear-gradient(90deg, #1976d2, #015fc7);
+  border: none;
+  color: white;
+  padding: 10px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.vote-btn-election:hover {
+  background: #015fc7;
+}
+
+/* Content */
+.election-content {
+  width: 80%;
+  margin: 40px auto;
+}
+
+.election-content h3 {
+  margin: 20px 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.election-card {
+  background: #d1d1d1;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: 500;
+}
