@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import Election from "./pages/Election";
 import Contact from "./pages/Contact";
 import Features from "./pages/Features";
+import ElectionInstructions from "./pages/ElectionInstructions";
 
 function App() {
   const location = useLocation();
@@ -21,6 +22,8 @@ function App() {
     "/personal-info",
     "/personal-info/election",
     "/personal-info/contact",
+    "/personal-info/vote",
+    "/voting",
   ].includes(location.pathname);
 
   return (
@@ -41,6 +44,10 @@ function App() {
           <Route path="/personal-info/election" element={<Election />} />
           <Route path="/personal-info/contact" element={<Contact />} />
           <Route path="/contact" element={<Contact />} />
+          <Route
+            path="/personal-info/vote"
+            element={<ElectionInstructions />}
+          />
         </Routes>
       </main>
 

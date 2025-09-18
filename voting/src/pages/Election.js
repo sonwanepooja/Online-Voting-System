@@ -1,8 +1,13 @@
 import React from "react";
 import "../components/Election.css";
 import VOTE_BUTTON from "../Images/voteButton.svg";
+import { useNavigate } from "react-router-dom";
 
 const Election = () => {
+  const navigate = useNavigate();
+  const handleClickVote = () => {
+    navigate("/personal-info/vote");
+  };
   return (
     <div className="election-container">
       {/* Navbar */}
@@ -19,7 +24,12 @@ const Election = () => {
           </li>
           <li>
             {/* <button className="vote-btn">Vote</button> */}
-            <img src={VOTE_BUTTON} alt="vote-button" />
+            <img
+              src={VOTE_BUTTON}
+              alt="vote-button"
+              style={{ cursor: "pointer" }}
+              onClick={handleClickVote}
+            />
           </li>
         </ul>
       </nav>

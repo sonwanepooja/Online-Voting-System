@@ -1,6 +1,12 @@
 import React from "react";
 import "../components/Features.css";
-import { FaLock, FaLaptop, FaThumbsUp, FaDollarSign, FaClock } from "react-icons/fa";
+import {
+  FaLock,
+  FaLaptop,
+  FaThumbsUp,
+  FaDollarSign,
+  FaClock,
+} from "react-icons/fa";
 import { SiEthereum } from "react-icons/si";
 
 const Features = () => {
@@ -16,7 +22,7 @@ const Features = () => {
   return (
     <div className="features-container">
       <div className="features-title">
-        <h2>Features</h2>
+        <h2 style={{ height: "450px", "text-align": "center" }}>Features</h2>
       </div>
       <div className="features-list">
         {features.map((item, index) => (

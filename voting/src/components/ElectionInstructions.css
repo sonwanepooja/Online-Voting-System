@@ -1,0 +1,76 @@
+@font-face {
+  font-family: "Tienne";
+  src: url("../Images/Tienne-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Tienne-Bold";
+  src: url("../Images/Tienne-Bold.ttf") format("truetype");
+}
+
+.instructions-container {
+  background: #f2f2f2;
+  padding: 25px; /* reduced from 30px */
+  font-family: Arial, sans-serif;
+}
+
+.instructions-box {
+  width: 100%;
+  padding: 20px; /* reduced from 30px */
+  background: #fff;
+  border: 1px solid #000;
+  box-sizing: border-box;
+}
+
+.instructions-box h3 {
+  font-size: 21px; /* reduced from 22px */
+  margin-bottom: 10px;
+  font-family: "Tienne-Bold";
+}
+
+.instructions-box h4 {
+  font-size: 21px; /* reduced from 22px */
+  margin-bottom: 10px;
+  font-family: "Tienne";
+}
+
+.instructions-box p {
+  margin-bottom: 10px;
+  line-height: 1.5; /* reduced spacing */
+  font-family: "Tienne";
+  font-size: 21px; /* reduced */
+}
+
+.instructions-box ul {
+  padding-left: 18px;
+  margin-bottom: 15px;
+  font-family: "Tienne";
+  font-size: 21px;
+}
+
+.instructions-box li {
+  margin-bottom: 6px;
+}
+
+.checkbox-section {
+  font-size: 21px; /* reduced */
+  margin-bottom: 15px;
+  font-family: serif;
+}
+
+.cancel-btn,
+.proceed-btn {
+  font-size: 22px;
+  background: #015fc7;
+  border: none;
+  font-family: "Tienne";
+  width: 148px;
+  height: 40px;
+  color: #ffffff;
+}
+
+.button-group {
+  display: flex;
+  justify-content: end;
+  gap: 14px;
+}

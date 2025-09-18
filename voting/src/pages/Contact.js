@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useLocation } from "react-router-dom";
-
-// ContactPage component for an online voting application
-// - No external CSS file required (inline CSS-in-JS used)
-// - Uses react-hook-form with `control` (user preference)
-// - Sends form data to `/api/contact` (you can adapt to your API)
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function ContactPage() {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const {
     handleSubmit,
     control,
@@ -25,12 +22,11 @@ export default function ContactPage() {
     },
   });
 
-  const [status, setStatus] = useState(null); // null | 'success' | 'error'
+  const [status, setStatus] = useState(null);
 
   async function onSubmit(data) {
     setStatus(null);
     try {
-      // Replace with your real API endpoint
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -47,38 +43,47 @@ export default function ContactPage() {
     }
   }
 
-  // Simple CSS-in-JS styles (keeps everything in one file as requested)
   const styles = {
     page: {
       display: "flex",
+      flexDirection: "column",
       alignItems: "center",
-      justifyContent: "center",
       background: "#f6f8fb",
-    //   padding: "24px",
       boxSizing: "border-box",
       fontFamily: `Segoe UI, Roboto, -apple-system, 'Helvetica Neue', Arial`,
+      minHeight: location?.pathname === "/personal-info/contact" ?"100vh":"70vh",
+    },
+    backBtn: {
+      alignSelf: "flex-start",
+      margin: "20px 0 10px 20px",
+      padding: "8px 14px",
+      background: "#0b69ff",
+      color: "#fff",
+      border: "none",
+      borderRadius: 6,
+      cursor: "pointer",
+      fontSize: 14,
+      fontWeight: 600,
     },
     card: {
       width: "100%",
-      maxWidth: "100%", // remove restriction
-      minHeight: location?.pathname === "/personal-info/contact" && "100vh",
-      padding: location?.pathname === "/personal-info/contact" ? "20px":"24px",
-
-      //   background: "#fff",
-      borderRadius: 0, // optional: remove rounded edges if you want edge-to-edge
-      boxShadow: "none", // optional: remove shadow for cleaner full width
-      //   padding: 28,
+      maxWidth: "100%",
+      padding: location?.pathname === "/personal-info/contact" ? "40px" : "24px",
+      borderRadius: 0,
+      boxShadow: "none",
       boxSizing: "border-box",
-      display: "flex", // use flex instead of grid for simpler layout
-      flexDirection: "row", // side-by-side if you still want aside visible
+      display: "flex",
+      flexDirection: "row",
       gap: 24,
     },
-
     header: { marginBottom: 8 },
     title: { fontSize: 22, margin: 0, color: "black" },
     subtitle: { margin: "6px 0 18px", color: "black", fontSize: 14 },
-
-    form: { display: "flex", flexDirection: "column", gap: 12 },
+    form: {
+      display: "flex",
+      flexDirection: "column",
+      gap: location?.pathname === "/personal-info/contact" ? "40px" : "12px",
+    },
     fieldRow: { display: "flex", gap: 110 },
     input: {
       padding: "10px 12px",
@@ -99,12 +104,11 @@ export default function ContactPage() {
     },
     label: { fontSize: 13, color: "black", marginBottom: 6, marginRight: 10 },
     error: { color: "#dc2626", fontSize: 12, marginTop: 4 },
-
     asideBox: {
       background: "white",
       borderRadius: 10,
       padding: 16,
-      height: "100%",
+      height: location?.pathname === "/personal-info/contact" ? "" : "100%",
       boxSizing: "border-box",
       display: "flex",
       flexDirection: "column",
@@ -134,6 +138,11 @@ export default function ContactPage() {
 
   return (
     <div style={styles.page}>
+      {/* ✅ Back button always visible */}
+      <button style={styles.backBtn} onClick={() => navigate(-1)}>
+        ← Back
+      </button>
+
       <main style={styles.card}>
         <section>
           <header style={styles.header}>
@@ -229,7 +238,7 @@ export default function ContactPage() {
                   name="phone"
                   rules={{
                     pattern: {
-                      value: /^[0-9()+\-\s]{7,20}$/,
+                      value: /^[0-9()+\-\s]{7,20}$/i,
                       message: "Invalid phone number",
                     },
                   }}

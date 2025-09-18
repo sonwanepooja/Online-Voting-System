@@ -20,6 +20,11 @@ const Header = () => {
     navigate("/registration");
   };
 
+  const handleClickReadMore = () => {
+    navigate("/");
+    navigate("/feature");
+  };
+
   return (
     <div className="header-container">
       {/* Background with particles/stars effect */}
@@ -91,7 +96,9 @@ const Header = () => {
             <button className="register-btn" onClick={handleClickRegister}>
               REGISTER
             </button>
-            <button className="read-more-btn">READ MORE</button>
+            <button className="read-more-btn" onClick={handleClickReadMore}>
+              READ MORE
+            </button>
           </div>
         </div>
       </div>

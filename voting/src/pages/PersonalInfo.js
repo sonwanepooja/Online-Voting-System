@@ -3,8 +3,16 @@ import "../components/PersonalInfo.css";
 import PROFILE_IMAGE from "../Images/Group 6.svg";
 import VOTE_BUTTON from "../Images/voteButton.svg";
 import edit_Vector from "../Images/edit_Vector.svg";
+import { useNavigate } from "react-router-dom";
 
 const PersonalInfo = () => {
+  const navigate = useNavigate();
+
+  const handleClickVote = () => {
+    // navigate("/personal-info/vote");
+    navigate("/personal-info/election")
+  };
+
   return (
     <div className="dashboard-container-personal-info">
       {/* Navigation */}
@@ -23,6 +31,7 @@ const PersonalInfo = () => {
             src={VOTE_BUTTON}
             alt="vote-button"
             style={{ cursor: "pointer" }}
+            onClick={handleClickVote}
           />
           {/* <button className="vote-btn">Vote</button> */}
         </div>

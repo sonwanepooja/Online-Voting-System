@@ -12,19 +12,22 @@
 .about-heading {
   writing-mode: vertical-rl;   /* vertical text */
   transform: rotate(180deg);
-  font-size: 28px;
-  font-weight: bold;
-  border-right: 2px solid #fff;
+  font-size: 40px;
+  border-left: 2px solid #fff;
   padding-right: 20px;
   margin-right: 20px;
+  font-family: serif;
+  text-align: center;
 }
 
 .about-heading h2 {
   margin: 0;
+  height:500px
 }
 
 .about-content {
   flex: 1;
-  font-size: 30px;
+  font-size: 40px;
   line-height: 1.6;
+  font-family: serif;
 }
