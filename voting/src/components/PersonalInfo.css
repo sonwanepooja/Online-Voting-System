@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'Padauk';
-  src: url('../Images/Padauk-Regular.ttf') format('truetype');
+  font-family: "Padauk";
+  src: url("../Images/Padauk-Regular.ttf") format("truetype");
 }
 
 /* ProfileDashboard.css */
@@ -9,6 +9,7 @@
   background: #000000;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #ffffff;
+  overflow: auto;
   /* width: 100vw; */
 }
 
@@ -213,12 +214,30 @@
   font-family: serif;
 }
 
+.info-input {
+  padding: 3px;
+  width: 50%;
+  font-family: serif;
+  font-size: 21px;
+}
+
+.save-profile-btn {
+  width: 30%;
+  padding: 3px;
+  color: black;
+  font-family: serif;
+  font-size: 21px;
+  border: none;
+
+}
+
 /* Status Row */
 .status-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  /* gap: 40px; */
   margin-top: 20px;
+  margin-right: 96px;
 }
 
 .status-item {

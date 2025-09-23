@@ -1,77 +1,187 @@
-import React from "react";
+import React, { useState } from "react";
 import "../components/Registration.css";
 import REGISTRATION_IMAGE from "../Images/Figure.svg";
 
 const Registration = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    dateOfBirth: "",
+    parentName: "",
+    email: "",
+    mobile: "",
+    role: "",
+    password: "",
+    confirmPassword: "",
+    aadharCardNumber: "",
+  });
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  // Handle input changes
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Handle submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.aadharCardNumber || !formData.password) {
+      setError("Please enter both Aadhar Card Number and password");
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8081/user/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Registration failed");
+      }
+
+      await response.json();
+      setError("");
+      setSuccess(true); // ✅ show success message instead of form
+    } catch (error) {
+      console.error("Error registering:", error);
+      setError("Registration failed! Please try again.");
+    }
+  };
+
   return (
     <div className="form-container">
-      {/* Left side image/illustration */}
+      {/* Left side image */}
       <div className="form-image">
         <img src={REGISTRATION_IMAGE} alt="illustration" />
       </div>
 
-      {/* Right side form */}
+      {/* Right side */}
       <div className="form-box">
         <span style={{ fontSize: "45px", fontFamily: "serif" }}>
-          Registration form
+          Registration
         </span>
-        <form>
-          <label className="label-registration">Name</label>
-          <input
-            className="input-registration"
-            type="text"
-            placeholder="Enter your name"
-          />
 
-          <label className="label-registration">Date Of Birth</label>
-          <input className="input-registration" type="date" />
+        {error && <p className="error-text">{error}</p>}
 
-          <label className="label-registration">Father's / Mother's Name</label>
-          <input
-            className="input-registration"
-            type="text"
-            placeholder="Enter parent's name"
-          />
+        {/* ✅ Show success message OR form */}
+        {success ? (
+          <div className="success-message">
+            <h2>Registration Successfully Completed 🎉</h2>
+            <p>You can now login with your credentials.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <label className="label-registration">Name</label>
+            <input
+              className="input-registration"
+              type="text"
+              name="name"
+              placeholder="Enter your name"
+              value={formData.name}
+              onChange={handleChange}
+            />
 
-          <label className="label-registration">Email</label>
-          <input
-            className="input-registration"
-            type="email"
-            placeholder="Enter email"
-          />
+            <label className="label-registration">Date Of Birth</label>
+            <input
+              className="input-registration"
+              type="date"
+              name="dateOfBirth"
+              value={formData.dateOfBirth}
+              onChange={handleChange}
+            />
 
-          <label className="label-registration">Mobile No.</label>
-          <input
-            className="input-registration"
-            type="tel"
-            placeholder="Enter mobile number"
-          />
+            <label className="label-registration">
+              Father's / Mother's Name
+            </label>
+            <input
+              className="input-registration"
+              type="text"
+              name="parentName"
+              placeholder="Enter parent's name"
+              value={formData.parentName}
+              onChange={handleChange}
+            />
 
-          <label className="label-registration">Password</label>
-          <input
-            className="input-registration"
-            type="password"
-            placeholder="Enter password"
-          />
+            <label className="label-registration">Email</label>
+            <input
+              className="input-registration"
+              type="email"
+              name="email"
+              placeholder="Enter email"
+              value={formData.email}
+              onChange={handleChange}
+            />
 
-          <label className="label-registration">Re-enter Password</label>
-          <input
-            className="input-registration"
-            type="password"
-            placeholder="Re-enter password"
-          />
+            <label className="label-registration">Mobile No.</label>
+            <input
+              className="input-registration"
+              type="tel"
+              name="mobile"
+              placeholder="Enter mobile number"
+              value={formData.mobile}
+              onChange={handleChange}
+            />
 
-          <label className="label-registration">Aadhar Number</label>
-          <input
-            className="input-registration"
-            type="text"
-            placeholder="Enter Aadhar number"
-          />
+            <label className="label-registration">Role</label>
+            <select
+              className="input-registration"
+              style={{ width: "52%" }}
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+            >
+              <option value="">Select Role</option>
+              <option value="voter">Voter</option>
+              <option value="candidate">Candidate</option>
+              <option value="admin">Admin</option>
+            </select>
 
-          <button type="submit" className="submit-button-registration">
-            SUBMIT
-          </button>
-        </form>
+            <label className="label-registration">Password</label>
+            <input
+              className="input-registration"
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+
+            <label className="label-registration">Re-enter Password</label>
+            <input
+              className="input-registration"
+              type="password"
+              name="confirmPassword"
+              placeholder="Re-enter password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+            />
+
+            <label className="label-registration">Aadhar Number</label>
+            <input
+              className="input-registration"
+              type="text"
+              name="aadharCardNumber"
+              placeholder="Enter Aadhar number"
+              value={formData.aadharCardNumber}
+              onChange={handleChange}
+            />
+
+            <button type="submit" className="submit-button-registration">
+              SUBMIT
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );

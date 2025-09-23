@@ -30,10 +30,15 @@ const Login = () => {
       }
 
       const data = await response.json();
-      console.log("Login success:", data);
 
-      // ✅ Save token in cookies (expires in 1 day)
-      Cookies.set("authToken", data.token, { expires: 1, secure: true });
+      Cookies.set(
+        "authData",
+        JSON.stringify({
+          token: data.token,
+          id: data.id,
+        }),
+        { expires: 1, secure: true }
+      );
 
       navigate("/personal-info"); // redirect after login
     } catch (error) {

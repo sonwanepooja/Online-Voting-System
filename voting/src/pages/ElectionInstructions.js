@@ -10,7 +10,7 @@ const ElectionInstructions = () => {
   };
 
   const handleClickProceed = () => {
-    navigate("/voting");
+    navigate("/personal-info/voting");
   };
 
   return (

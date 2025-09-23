@@ -5,14 +5,16 @@
 
 .voting-container-voting-panel {
   width: 100%;
-  height: 100vh; /* full height */
+  min-height: 100vh;
   overflow: auto;
-  background: #001633; /* dark navy background */
-  padding-right: 200px;
-  padding-left: 200px;
-  padding-bottom: 20px;
+  background: #001633;
+  padding: 20px 0; /* remove left-right big padding */
   box-sizing: border-box;
   color: #000;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center container */
 }
 
 .panel-title {
@@ -20,12 +22,20 @@
   font-family: serif;
   margin-bottom: 20px;
   color: white;
+  text-align: left;
+  width: 90%;        /* match cards width */
+  max-width: 900px;  /* same as card max width */
 }
+
 
 /* Candidate Card */
 .candidate-card {
   background: #fff;
-  margin-bottom: 18px;
+  margin: 18px auto;         /* center the card */
+  border-radius: 6px;
+  overflow: hidden;
+  width: 80%;                /* reduced width */
+  max-width: 900px;          /* limit on big screens */
 }
 
 .candidate-card.selected {
@@ -36,9 +46,11 @@
 .candidate-header {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
   padding: 14px 18px;
   cursor: pointer;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .candidate-header.selected {
@@ -46,52 +58,58 @@
   background: #8b8b8b;
   color: white;
   font-family: "Tienne";
-  font-size: 30px;
+  font-size: 28px;
 }
 
 /* Radio */
 .candidate-header input {
-  width: 31px;
-  height: 31px;
+  width: 26px;
+  height: 26px;
   margin: 0;
 }
 
 /* Name, Party, Symbol */
 .name {
   flex: 1;
-  font-size: 30px;
+  font-size: 26px;
   font-family: "Tienne";
 }
 
 .party {
   flex: 1;
-  font-size: 30px;
+  font-size: 26px;
   font-family: "Tienne";
 }
 
 .symbol {
-  width: 150px;
+  width: 120px;
   text-align: center;
-  font-size: 30px;
+  font-size: 26px;
   font-family: "Tienne";
 }
 
 /* Arrow always to the right */
 .arrow {
-  font-size: 30px;
+  font-size: 26px;
   color: #000000;
 }
 
 /* Candidate Details Box */
+.candidate-details-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 .candidate-details {
   background: #fff;
-  font-size: 30px;
+  font-size: 24px;
   font-family: "Tienne";
   display: flex;
   flex-direction: column;
-  padding: 25px 40px;
-
-  width: 973px;
+  padding: 20px;
+  width: 93%;
+  max-width: 900px;
+  box-sizing: border-box;
 }
 
 /* Confirmation text */
@@ -99,9 +117,11 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 18px 0;
+  margin: 18px auto;
+  width: 80%;
+  max-width: 900px;
   color: white;
-  font-size: 30px;
+  font-size: 24px;
   font-family: "Tienne";
 }
 
@@ -109,20 +129,53 @@
 .submit-btn {
   background: #0066cc;
   color: #fff;
-  padding: 10px 22px;
-  font-size: 15px;
+  padding: 12px 28px;
+  font-size: 16px;
   font-weight: bold;
   border: none;
   cursor: pointer;
   display: block;
-  margin: 0 auto;
+  margin: 20px auto 0;
+  border-radius: 6px;
 }
 
 .submit-btn:hover {
   background: #004c99;
 }
 
-.candidate-details-wrapper {
-  display: flex;
-  justify-content: center;
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 1024px) {
+  .candidate-card,
+  .candidate-details,
+  .confirmation {
+    width: 90%;
+  }
+}
+
+@media (max-width: 600px) {
+  .panel-title {
+    font-size: 28px;
+  }
+
+  .candidate-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .name,
+  .party,
+  .symbol,
+  .arrow {
+    font-size: 20px;
+  }
+
+  .candidate-details {
+    font-size: 18px;
+    padding: 16px;
+  }
+
+  .confirmation {
+    font-size: 18px;
+  }
 }

@@ -12,6 +12,7 @@ body {
   height: 100vh;
   background-color: #0c1b2d;
   color: white;
+  overflow: auto;
 }
 
 /* Left Section */
@@ -20,7 +21,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 110px;
 }
 
 .illustration {

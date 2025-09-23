@@ -1,107 +1,168 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../components/VotingPanel.css";
-
-const candidates = [
-  {
-    id: 1,
-    shortName: "Baburao",
-    name: "Baburao Ganpatrao Apte",
-    age: 58,
-    party: "Independent",
-    education: "BA (English Hons.)",
-    symbol: "👓",
-  },
-  {
-    id: 2,
-    shortName: "Narendra Modi",
-    name: "Narendra Modi",
-    party: "BJP",
-    symbol: "🪷",
-  },
-  {
-    id: 3,
-    shortName: "Rahul Gandhi",
-    name: "Rahul Gandhi",
-    party: "Congress",
-    symbol: "✋",
-  },
-  {
-    id: 4,
-    shortName: "Arvind Kejriwal",
-    name: "Arvind Kejriwal",
-    party: "AAP",
-    symbol: "✔️",
-  },
-];
+import { useParams } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const VotingPanel = () => {
   const [selectedCandidate, setSelectedCandidate] = useState(null);
+  const [candidates, setCandidates] = useState([]);
+  const params = useParams();
 
-  const sortedCandidates = selectedCandidate
-    ? [
-        selectedCandidate,
-        ...candidates.filter((c) => c.id !== selectedCandidate.id),
-      ]
-    : candidates;
+  // Fetch candidates from backend
+  const getElectionCandidateData = async () => {
+    try {
+      const authData = Cookies.get("authData")
+        ? JSON.parse(Cookies.get("authData"))
+        : null;
+
+      if (!authData) {
+        console.error("No auth data found in cookies");
+        return;
+      }
+
+      const { token } = authData;
+
+      const response = await fetch(
+        `http://localhost:8081/election/${params?.id}/candidates`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${token}`, // uncomment if protected
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errMsg = await response.text();
+        throw new Error(errMsg || "Failed to fetch candidates");
+      }
+
+      const data = await response.json();
+
+      // Keep backend _id to use for voting
+      const formattedCandidates = data.candidates.map((c) => ({
+        _id: c._id,
+        shortName: c.name.split(" ")[0],
+        name: c.name,
+        age:
+          c.age ||
+          (c.dateOfBirth
+            ? new Date().getFullYear() - new Date(c.dateOfBirth).getFullYear()
+            : null),
+        party: c.party || "Independent",
+        email: c.email,
+        mobile: c.mobile,
+        aadharCardNumber: c.aadharCardNumber,
+      }));
+
+      setCandidates(formattedCandidates);
+    } catch (error) {
+      console.error("Error fetching candidates:", error);
+    }
+  };
+
+  // Submit vote using backend _id
+  const handleSubmitVote = async () => {
+    if (!selectedCandidate) {
+      alert("Please select a candidate first");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:8081/candidate/vote/${selectedCandidate._id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${token}`, // if needed
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errMsg = await response.text();
+        throw new Error(errMsg || "Vote submission failed");
+      }
+
+      alert("Vote submitted successfully!");
+    } catch (error) {
+      console.error(error);
+      alert("Error submitting vote");
+    }
+  };
+
+  useEffect(() => {
+    getElectionCandidateData();
+  }, []);
 
   return (
     <div className="voting-container-voting-panel">
       <h2 className="panel-title">Voting Panel</h2>
 
-      {sortedCandidates.map((c) => (
-        <div
-          key={c.id}
-          className={`candidate-card ${
-            selectedCandidate?.id === c.id ? "selected" : ""
-          }`}
-        >
+      {[...candidates]
+        .sort((a, b) => (selectedCandidate?._id === a._id ? -1 : 0))
+        .map((c) => (
           <div
-            // className="candidate-header"
-             className={`candidate-header ${
-            selectedCandidate?.id === c.id ? "selected" : ""
-          }`}
-            onClick={() => setSelectedCandidate(c)}
+            key={c._id}
+            className={`candidate-card ${
+              selectedCandidate?._id === c._id ? "selected" : ""
+            }`}
           >
-            <input
-              type="radio"
-              name="vote"
-              color="red"
-              checked={selectedCandidate?.id === c.id}
-              readOnly
-            />
-            <span className="name">{c.shortName || c.name}</span>
-            <span className="party">{c.party}</span>
-            <span className="symbol">{c.symbol}</span>
-            <span className="arrow">
-              {selectedCandidate?.id === c.id ? "›" : "⌄"}
-            </span>
-          </div>
+            <div
+              className={`candidate-header ${
+                selectedCandidate?._id === c._id ? "selected" : ""
+              }`}
+              onClick={() => setSelectedCandidate(c)}
+            >
+              <input
+                type="radio"
+                name="vote"
+                checked={selectedCandidate?._id === c._id}
+                readOnly
+              />
+              <span className="name">{c.shortName || c.name}</span>
+              <span className="party">{c.party}</span>
+              <span className="arrow">
+                {selectedCandidate?._id === c._id ? "›" : "⌄"}
+              </span>
+            </div>
 
-          {selectedCandidate?.id === c.id && (
-            <div className="candidate-details-wrapper">
-            <div className="candidate-details">
-              <span>
-                <b>Name:</b> {c.name}
-              </span>
-              {c.age && (
-                <span>
-                  <b>Age:</b> {c.age}
-                </span>
-              )}
-              <span>
-                <b>Party:</b> {c.party}
-              </span>
-              {c.education && (
-                <span>
-                  <b>Education:</b> {c.education}
-                </span>
-              )}
-            </div>
-            </div>
-            
-          )}
-        </div>
-      ))}
+            {selectedCandidate?._id === c._id && (
+              <div className="candidate-details-wrapper">
+                <div className="candidate-details">
+                  <span>
+                    <b>Name:</b> {c.name}
+                  </span>
+                  {c.age && (
+                    <span>
+                      <b>Age:</b> {c.age}
+                    </span>
+                  )}
+                  <span>
+                    <b>Party:</b> {c.party}
+                  </span>
+                  {c.email && (
+                    <span>
+                      <b>Email:</b> {c.email}
+                    </span>
+                  )}
+                  {c.mobile && (
+                    <span>
+                      <b>Mobile:</b> {c.mobile}
+                    </span>
+                  )}
+                  {c.aadharCardNumber && (
+                    <span>
+                      <b>Aadhar:</b> {c.aadharCardNumber}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
 
       {selectedCandidate && (
         <div className="confirmation">
@@ -111,7 +172,9 @@ const VotingPanel = () => {
         </div>
       )}
 
-      <button className="submit-btn">SUBMIT</button>
+      <button className="submit-btn" onClick={handleSubmitVote}>
+        SUBMIT
+      </button>
     </div>
   );
 };

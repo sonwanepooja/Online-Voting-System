@@ -17,14 +17,15 @@ function App() {
   const location = useLocation();
 
   // Pages where Header and Footer should NOT be show
-  const hideHeaderFooter = [
-    "/login",
-    "/personal-info",
-    "/personal-info/election",
-    "/personal-info/contact",
-    "/personal-info/vote",
-    "/voting",
-  ].includes(location.pathname);
+  // Pages where Header and Footer should NOT be shown
+const hideHeaderFooter = [
+  "/login",
+  "/personal-info",
+  "/personal-info/election",
+  "/personal-info/contact",
+  "/personal-info/vote",
+].some((path) => location.pathname === path || location.pathname.startsWith("/personal-info/voting/"));
+
 
   return (
     <div className="app-container">
@@ -39,7 +40,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/feature" element={<Features />} />
           <Route path="/registration" element={<Registration />} />
-          <Route path="/voting" element={<VotingPanel />} />
+          <Route path="/personal-info/voting/:id" element={<VotingPanel />} />
           <Route path="/personal-info" element={<PersonalInfo />} />
           <Route path="/personal-info/election" element={<Election />} />
           <Route path="/personal-info/contact" element={<Contact />} />
