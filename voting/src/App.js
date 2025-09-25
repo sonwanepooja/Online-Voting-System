@@ -12,20 +12,25 @@ import Election from "./pages/Election";
 import Contact from "./pages/Contact";
 import Features from "./pages/Features";
 import ElectionInstructions from "./pages/ElectionInstructions";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const location = useLocation();
 
   // Pages where Header and Footer should NOT be show
   // Pages where Header and Footer should NOT be shown
-const hideHeaderFooter = [
-  "/login",
-  "/personal-info",
-  "/personal-info/election",
-  "/personal-info/contact",
-  "/personal-info/vote",
-].some((path) => location.pathname === path || location.pathname.startsWith("/personal-info/voting/"));
-
+  const hideHeaderFooter = [
+    "/login",
+    "/personal-info",
+    "/personal-info/election",
+    "/personal-info/contact",
+    "/personal-info/vote",
+  ].some(
+    (path) =>
+      location.pathname === path ||
+      location.pathname.startsWith("/personal-info/voting/") ||
+      location.pathname.startsWith("/reset-password/")
+  );
 
   return (
     <div className="app-container">
@@ -49,6 +54,7 @@ const hideHeaderFooter = [
             path="/personal-info/vote"
             element={<ElectionInstructions />}
           />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
       </main>
 

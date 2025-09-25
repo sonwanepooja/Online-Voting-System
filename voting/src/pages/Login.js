@@ -10,6 +10,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const token=Cookies.get("authData")?JSON.parse(Cookies.get("authData")).token:null;
+
   const handleLogin = async () => {
     if (!aadharCardNumber || !password) {
       setError("Please enter both Aadhar Card Number and password");
@@ -83,7 +85,7 @@ const Login = () => {
           {error && <p style={{ color: "red" }}>{error}</p>}
 
           <div className="links">
-            <a href="#">Forgot Password?</a>
+            <a href={`/reset-password/${token}`}>Forgot Password?</a>
             <p>
               Not a user?{" "}
               <span

@@ -27,7 +27,7 @@ export default function ContactPage() {
   async function onSubmit(data) {
     setStatus(null);
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch("http://localhost:8081/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

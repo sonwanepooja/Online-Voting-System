@@ -56,9 +56,15 @@ const Election = () => {
   }, {});
 
   // 🔹 Navigate with electionId
-  const handleElectionClick = (id) => {
-    console.log(id, "id");
-    navigate(`/personal-info/voting/${id}`);
+  const handleElectionClick = (id, status) => {
+    console.log(id, "id", status);
+    if (status !== "ongoing") {
+      alert("You can vote only in Ongoing elections.");
+      return;
+    }
+    navigate("/personal-info/vote", {
+      state: { electionId: id },
+    });
   };
 
   return (
@@ -96,7 +102,7 @@ const Election = () => {
                 <div
                   key={el._id}
                   className="election-card"
-                  onClick={() => handleElectionClick(el._id)}
+                  onClick={() => handleElectionClick(el._id, status)}
                 >
                   <span>{el.name}</span>
                   <span>

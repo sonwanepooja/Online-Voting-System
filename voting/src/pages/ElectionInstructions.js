@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import "../components/ElectionInstructions.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ElectionInstructions = () => {
+  const location = useLocation();
+  const id = location?.state?.electionId;
   const navigate = useNavigate();
+
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleClickCancel = () => {
     navigate("/personal-info");
   };
 
   const handleClickProceed = () => {
-    navigate("/personal-info/voting");
+    if (!isChecked) {
+      alert("Accept terms & conditions"); // show message if not checked
+      return;
+    }
+    navigate(`/personal-info/voting/${id}`);
   };
 
   return (
@@ -53,7 +61,12 @@ const ElectionInstructions = () => {
         </ul>
 
         <div className="checkbox-section">
-          <input type="checkbox" id="agree" />
+          <input
+            type="checkbox"
+            id="agree"
+            checked={isChecked}
+            onChange={(e) => setIsChecked(e.target.checked)}
+          />
           <label htmlFor="agree">
             I understand and will follow above steps.
           </label>

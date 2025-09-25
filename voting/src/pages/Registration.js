@@ -27,32 +27,80 @@ const Registration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.aadharCardNumber || !formData.password) {
-      setError("Please enter both Aadhar Card Number and password");
+    // Check required fields
+    const {
+      name,
+      dateOfBirth,
+      parentName,
+      email,
+      mobile,
+      password,
+      confirmPassword,
+      aadharCardNumber,
+      role,
+    } = formData;
+    if (
+      !name ||
+      !dateOfBirth ||
+      !parentName ||
+      !email ||
+      !mobile ||
+      !password ||
+      !confirmPassword ||
+      !aadharCardNumber ||
+      !role
+    ) {
+      setError("Please fill in all required fields");
       return;
     }
 
-    if (formData.password !== formData.confirmPassword) {
+    // Validate mobile
+    if (!/^\d{10}$/.test(mobile)) {
+      setError("Please enter a valid 10-digit mobile number");
+      return;
+    }
+
+    // Validate Aadhar
+    if (!/^\d{12}$/.test(aadharCardNumber)) {
+      setError("Please enter a valid 12-digit Aadhar number");
+      return;
+    }
+
+    // Validate password
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long");
+      return;
+    }
+
+    if (password !== confirmPassword) {
       setError("Passwords do not match");
+      return;
+    }
+
+    // Validate email
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setError("Please enter a valid email address");
       return;
     }
 
     try {
       const response = await fetch("http://localhost:8081/user/signup", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error("Registration failed");
+        // If server sends error message
+        setError(data.message || "Registration failed! Please try again.");
+        return;
       }
 
-      await response.json();
       setError("");
-      setSuccess(true); // ✅ show success message instead of form
+      setSuccess(true);
+      // Optionally reset formData here
     } catch (error) {
       console.error("Error registering:", error);
       setError("Registration failed! Please try again.");

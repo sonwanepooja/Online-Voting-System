@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../components/PersonalInfo.css";
 import PROFILE_IMAGE from "../Images/Group 6.svg";
 import VOTE_BUTTON from "../Images/voteButton.svg";
@@ -10,6 +10,10 @@ const PersonalInfo = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [editable, setEditable] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
+  const fileInputRef = useRef(null);
+
+  console.log(user, "user");
 
   const getUserData = async () => {
     try {
@@ -42,8 +46,6 @@ const PersonalInfo = () => {
       console.error("Error fetching user:", error);
     }
   };
-
-  console.log(user);
 
   useEffect(() => {
     getUserData();
@@ -82,23 +84,67 @@ const PersonalInfo = () => {
       const response = await fetch(`http://localhost:8081/user/${user?._id}`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json", // important
-          // Authorization: `Bearer ${token}`,    // important if protected
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(user),
       });
 
       if (!response.ok) {
-        const errMsg = await response.text(); // see backend error
+        const errMsg = await response.text();
         throw new Error(errMsg || "Failed to update profile");
       }
 
       const data = await response.json();
-      setUser(data.user); // update local state with backend response
+      setUser(data.user);
       setEditable(false);
       alert("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile:", error);
+    }
+  };
+
+  // 📌 Upload new profile picture
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Preview immediately
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+
+    try {
+      const authData = Cookies.get("authData")
+        ? JSON.parse(Cookies.get("authData"))
+        : null;
+
+      if (!authData) {
+        console.error("No auth data found in cookies");
+        return;
+      }
+
+      const { id, token } = authData;
+      const formData = new FormData();
+      formData.append("profileImage", file);
+
+      const response = await fetch(`http://localhost:8081/user/${id}/upload`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error("Failed to upload image");
+
+      const data = await response.json();
+      setUser({ ...user, profileImage: data.profileImage });
+      alert("Profile picture updated!");
+    } catch (error) {
+      console.error("Error uploading profile picture:", error);
     }
   };
 
@@ -135,21 +181,36 @@ const PersonalInfo = () => {
             <div className="profile-image-container">
               <div className="profile-image">
                 <img
-                  src={PROFILE_IMAGE}
-                  alt="profile-image"
+                  src={
+                    user.profileImage
+                      ? `http://localhost:8081/uploads/${user.profileImage}` // ✅ full path
+                      : previewImage
+                      ? previewImage
+                      : PROFILE_IMAGE
+                  }
+                  alt="profile"
                   height={200}
                   width={200}
+                  style={{ borderRadius: "50%" }}
                 />
               </div>
             </div>
 
             <div className="profile-buttons">
-              <button className="change-picture-btn">
+              <button
+                className="change-picture-btn"
+                onClick={() => fileInputRef.current.click()}
+              >
                 Change profile picture
               </button>
-              {editable ? (
-                ""
-              ) : (
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+              {!editable && (
                 <button className="edit-profile-btn" onClick={handleEditToggle}>
                   <span className="edit-icon">
                     <img src={edit_Vector} alt="edit" />
@@ -200,9 +261,9 @@ const PersonalInfo = () => {
               </div>
             </div>
 
+            {/* DOB */}
             <div className="info-item">
               <label className="info-label">Date Of Birth</label>
-
               {editable ? (
                 <input
                   type="date"
@@ -224,8 +285,7 @@ const PersonalInfo = () => {
               )}
             </div>
 
-            {/* Age and Contact */}
-            {/* <div className="info-row"> */}
+            {/* Age */}
             <div className="info-item">
               <label className="info-label">Age</label>
               {editable ? (
@@ -241,8 +301,7 @@ const PersonalInfo = () => {
               )}
             </div>
 
-            {/* </div> */}
-
+            {/* Contact */}
             <div className="info-item">
               <label className="info-label">Contact</label>
               {editable ? (
@@ -274,7 +333,7 @@ const PersonalInfo = () => {
               )}
             </div>
 
-            {/* Aadhar Number */}
+            {/* Aadhar */}
             <div className="info-item">
               <label className="info-label">Aadhar Number</label>
               {editable ? (
@@ -311,13 +370,13 @@ const PersonalInfo = () => {
               <div className="status-item">
                 <label className="info-label">Eligible</label>
                 <p className="status-value true">
-                  {user.eligible ? "True" : "False"}
+                  {user.age >= 18 ? "True" : "False"}
                 </p>
               </div>
               <div className="status-item">
                 <label className="info-label">Voted</label>
                 <p className="status-value true">
-                  {user.voted ? "True" : "False"}
+                  {user.isVoted ? "True" : "False"}
                 </p>
               </div>
             </div>
