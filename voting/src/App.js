@@ -13,21 +13,27 @@ import Contact from "./pages/Contact";
 import Features from "./pages/Features";
 import ElectionInstructions from "./pages/ElectionInstructions";
 import ResetPassword from "./pages/ResetPassword";
+import Cookies from "js-cookie";
+import AdminDashboard from "./pages/AdminDashboard";
+import Candidates from "./pages/Candidates";
+import Dashboard from "./pages/Dashboard";
+import User from "./pages/User";
+import Results from "./pages/Results";
+import Settings from "./pages/Settings";
 
 function App() {
   const location = useLocation();
+  const user = Cookies.get("authData")
+    ? JSON.parse(Cookies.get("authData"))
+    : null;
+  console.log(user);
 
   // Pages where Header and Footer should NOT be show
   // Pages where Header and Footer should NOT be shown
-  const hideHeaderFooter = [
-    "/login",
-    "/personal-info",
-    "/personal-info/election",
-    "/personal-info/contact",
-    "/personal-info/vote",
-  ].some(
+  const hideHeaderFooter = ["/adminDashboard", "/login", "/personal-info"].some(
     (path) =>
       location.pathname === path ||
+      location.pathname.startsWith("/adminDashboard") ||
       location.pathname.startsWith("/personal-info/voting/") ||
       location.pathname.startsWith("/reset-password/")
   );
@@ -39,23 +45,26 @@ function App() {
 
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<Rules />} /> {/* Default landing page */}
-          <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/feature" element={<Features />} />
-          <Route path="/registration" element={<Registration />} />
-          <Route path="/personal-info/voting/:id" element={<VotingPanel />} />
-          <Route path="/personal-info" element={<PersonalInfo />} />
-          <Route path="/personal-info/election" element={<Election />} />
-          <Route path="/personal-info/contact" element={<Contact />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route
-            path="/personal-info/vote"
-            element={<ElectionInstructions />}
-          />
-          <Route path="/reset-password/:token" element={<ResetPassword />} />
-        </Routes>
+  {user && user.role === "admin" ? (
+    <Route path="/adminDashboard/*" element={<AdminDashboard />} />
+  ) : (
+    <Route path="/*" element={<Home />} />
+  )}
+  <Route path="/" element={<Rules />} />
+  <Route path="/home" element={<Home />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/about" element={<About />} />
+  <Route path="/feature" element={<Features />} />
+  <Route path="/registration" element={<Registration />} />
+  <Route path="/personal-info/voting/:id" element={<VotingPanel />} />
+  <Route path="/personal-info" element={<PersonalInfo />} />
+  <Route path="/personal-info/election" element={<Election />} />
+  <Route path="/personal-info/contact" element={<Contact />} />
+  <Route path="/contact" element={<Contact />} />
+  <Route path="/personal-info/vote" element={<ElectionInstructions />} />
+  <Route path="/reset-password/:token" element={<ResetPassword />} />
+</Routes>
+
       </main>
 
       {/* Show Footer only when not hidden */}

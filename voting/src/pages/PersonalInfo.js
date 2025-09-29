@@ -68,6 +68,11 @@ const PersonalInfo = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
+  const handleLogout = () => {
+      Cookies.remove("authToken"); // remove token from cookies
+      navigate("/login"); // redirect to login page
+    };
+
   const handleSave = async () => {
     try {
       const authData = Cookies.get("authData")
@@ -170,6 +175,23 @@ const PersonalInfo = () => {
             style={{ cursor: "pointer" }}
             onClick={handleClickVote}
           />
+          <button
+            onClick={handleLogout}
+            // className="logout-btn"
+            style={{
+              background: "#ff4d4f",
+              border: "none",
+              padding: "6px 14px",
+              color: "white",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontFamily:"serif",
+              fontSize:"20px",
+              width:"100px",
+            }}
+          >
+            Logout
+          </button>
         </div>
       </nav>
 

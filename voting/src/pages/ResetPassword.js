@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../components/Login.css";
+import "../components/ResetPassword.css";
 import LOGIN_IMAGE from "../Images/login_svg.svg";
 
 const ForgotPassword = () => {
@@ -35,15 +35,16 @@ const ForgotPassword = () => {
         <img src={LOGIN_IMAGE} alt="Illustration" className="illustration" />
       </div>
 
-      <div className="right-section">
+      <div className="right-section-reset-password">
         <h2>Forgot Password</h2>
         <input
+        style={{padding:"10px",marginBottom:"20px"}}
           type="text"
           placeholder="Aadhar Card Number"
           value={aadharCardNumber}
           onChange={(e) => setAadharCardNumber(e.target.value)}
         />
-        <button onClick={handleForgot}>Request Reset</button>
+        <button onClick={handleForgot} style={{padding:"10px"}}>Request Reset</button>
         {message && (
           <p style={{ color: message.startsWith("✅") ? "green" : "red" }}>
             {message}

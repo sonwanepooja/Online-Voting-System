@@ -10,7 +10,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const token=Cookies.get("authData")?JSON.parse(Cookies.get("authData")).token:null;
+  const token = Cookies.get("authData")
+    ? JSON.parse(Cookies.get("authData")).token
+    : null;
 
   const handleLogin = async () => {
     if (!aadharCardNumber || !password) {
@@ -38,11 +40,17 @@ const Login = () => {
         JSON.stringify({
           token: data.token,
           id: data.id,
+          role: data.role,
         }),
         { expires: 1, secure: true }
       );
 
-      navigate("/personal-info"); // redirect after login
+      if (data.role === "admin") {
+        navigate("/adminDashboard");
+        return;
+      }
+
+      navigate("/personal-info");
     } catch (error) {
       console.error("Error logging in:", error);
       setError("Login failed! Check your credentials.");
